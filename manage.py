@@ -6,11 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-<<<<<<< HEAD
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'footballshop.settings')
-=======
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'football_shop.settings')
->>>>>>> origin/main
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
