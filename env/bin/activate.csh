@@ -9,11 +9,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-<<<<<<< HEAD
-setenv VIRTUAL_ENV "/Users/carmella/Documents/football-shop-task/env"
-=======
-setenv VIRTUAL_ENV "/Users/carmella/Documents/PBP/football-shop/env"
->>>>>>> 9a6df82f (Simpan perubahan lokal sebelum rebase)
+setenv VIRTUAL_ENV "/Users/carmella/Documents/football-shop/env"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"

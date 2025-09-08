@@ -33,11 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-<<<<<<< HEAD
-set -gx VIRTUAL_ENV "/Users/carmella/Documents/football-shop-task/env"
-=======
-set -gx VIRTUAL_ENV "/Users/carmella/Documents/PBP/football-shop/env"
->>>>>>> 9a6df82f (Simpan perubahan lokal sebelum rebase)
+set -gx VIRTUAL_ENV "/Users/carmella/Documents/football-shop/env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
