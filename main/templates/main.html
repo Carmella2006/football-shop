@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Football Shop</title>
+</head>
+
+<body>
+    <h1>Football Shop</h1>
+
+    <h5>NPM: </h5>
+    <p>{{ npm }}</p>
+
+    <h5>Name: </h5>
+    <p>{{ name }}</p>
+
+    <h5>Class: </h5>
+    <p>{{ class_name }}</p>
+
+    <hr>
+
+    <h2>Featured Products</h2>
+    <ul>
+        {% for product in products %}
+        {% if product.is_featured %}
+        <li>
+            <h3>{{ product.name }}</h3>
+            <p>Price: Rp {{ product.price }}</p>
+            <p>Category: {{ product.category }}</p>
+            <p>Description: {{ product.description }}</p>
+            <img src="{{ product.thumbnail }}" alt="{{ product.name }}" width="150">
+        </li>
+        {% endif %}
+        {% empty %}
+        <p>No featured products available.</p>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

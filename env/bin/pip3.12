@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#!/Users/carmella/Documents/football-shop-task/env/bin/python3.12
-=======
-#!/Users/carmella/Documents/PBP/football-shop/env/bin/python3.12
->>>>>>> 9a6df82f (Simpan perubahan lokal sebelum rebase)
+#!/Users/carmella/Documents/football-shop/env/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys
