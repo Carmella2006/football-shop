@@ -1,40 +1,53 @@
-<!DOCTYPE html>
-<html>
+<h1>Football Shop</h1>
 
-<head>
-    <title>Football Shop</title>
-</head>
+<h5>NPM: </h5>
+<p>{{ npm }}</p>
 
-<body>
-    <h1>Football Shop</h1>
+<h5>Name:</h5>
+<p>{{ name }}</p>
 
-    <h5>NPM: </h5>
-    <p>{{ npm }}</p>
+<h5>Class:</h5>
+<p>{{ class }}</p>
 
-    <h5>Name: </h5>
-    <p>{{ name }}</p>
+<a href="{% url 'main:create_product' %}">
+    <button>+ Add Product</button>
+</a>
 
-    <h5>Class: </h5>
-    <p>{{ class_name }}</p>
+<hr>
 
-    <hr>
+{% if not products %}
+<p>No products available in the shop.</p>
+{% else %}
 
-    <h2>Featured Products</h2>
-    <ul>
-        {% for product in products %}
-        {% if product.is_featured %}
-        <li>
-            <h3>{{ product.name }}</h3>
-            <p>Price: Rp {{ product.price }}</p>
-            <p>Category: {{ product.category }}</p>
-            <p>Description: {{ product.description }}</p>
-            <img src="{{ product.thumbnail }}" alt="{{ product.name }}" width="150">
-        </li>
-        {% endif %}
-        {% empty %}
-        <p>No featured products available at the moment. Please try again later ^^</p>
-        {% endfor %}
-    </ul>
-</body>
+{% for product in products %}
+<div>
+    <h2>
+        <a href="{% url 'main:show_product' product.id %}">
+            {{ product.name }}
+        </a>
+    </h2>
 
-</html>
+    <p>
+        <b>{{ product.category }}</b>
+        {% if product.is_featured %}| <b>Featured</b>{% endif %}
+        | Price: Rp {{ product.price }} | Stock: {{ product.stock }}
+    </p>
+
+    {% if product.thumbnail %}
+    <img src="{{ product.thumbnail }}" alt="{{ product.name }}" width="150" height="100">
+    <br />
+    {% endif %}
+
+    <p>{{ product.description|truncatewords:25 }}...</p>
+
+    <p>
+        <a href="{% url 'main:show_product' product.id %}">
+            <button>Detail</button>
+        </a>
+    </p>
+</div>
+
+<hr>
+{% endfor %}
+
+{% endif %}
