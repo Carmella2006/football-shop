@@ -11,7 +11,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     description = models.TextField()
-    thumbnail = models.URLField(max_length=200)
+    thumbnail = models.URLField(max_length=500)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='shoes')
     is_featured = models.BooleanField(default=False)
     stock = models.IntegerField(default=0)
