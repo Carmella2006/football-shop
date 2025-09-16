@@ -1,4 +1,5 @@
-# Football Shop - Django Project
+<details>
+<summary>Tugas 2</summary>
 
 ## Link Aplikasi
 (https://your-pws-link.cs.ui.ac.id)
@@ -85,3 +86,13 @@ Django dipilih sebagai framework awal dalam pembelajaran karena beberapa alasan:
 
 ## 6. Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
 Sejauh ini belum ada ^^
+</details>
+
+<details>
+<summary>Tugas 3</summary>
+## 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+## 2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+## 3. Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
+## 4. Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+## 6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
