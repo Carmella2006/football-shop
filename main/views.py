@@ -16,14 +16,15 @@ def show_main(request):
     return render(request, "main.html", context)
 
 def create_product(request):
-    form = ProductForm(request.POST or None)
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()  # <--- ini menyimpan ke database
+            return redirect('main:show_main')
+    else:
+        form = ProductForm()  # form kosong untuk GET
 
-    if form.is_valid() and request.method == "POST":
-        form.save()
-        return redirect('main:show_main')
-
-    context = {'form': form}
-    return render(request, "create_product.html", context)
+    return render(request, "create_product.html", {"form": form})
 
 def show_product(request, id):
     product = get_object_or_404(Product, pk=id)
