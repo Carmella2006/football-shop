@@ -177,7 +177,7 @@ Sejauh ini belum ada.
 ---
 
 ## Hasil akses keempat URL menggunakan Postman
-(images/akses_xml.png)
-(images/akses_json.png)
-(images/akses_xml_id.png)
-(images/akses_json_id.png)
+![akses XML](images/akses_xml.png)
+![akses JSON](images/akses_json.png)
+![akses XML by ID](images/akses_xml_id.png)
+![akses JSON by ID](images/akses_json_id.png)
