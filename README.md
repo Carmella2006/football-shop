@@ -3,7 +3,7 @@
 ## Link Aplikasi
 (https://your-pws-link.cs.ui.ac.id)
 
-## Implementasi Checklist Step-by-Step
+## 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
 1. **Membuat Proyek Django Baru**  
    - Menjalankan `django-admin startproject football_shop` untuk membuat proyek utama.
@@ -34,12 +34,12 @@
 
 ---
 
-## Bagan Request & Response
+## 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas HTML.
 ![Bagan](images/bagan.png)
 
 ---
 
-## Peran settings.py dalam Proyek Django
+## 3. Jelaskan peran settings.py dalam Proyek Django
 Berkas `settings.py` berfungsi sebagai pusat konfigurasi proyek Django.  
 Semua pengaturan utama didefinisikan di sini, seperti:  
 - **INSTALLED_APPS** → daftar aplikasi yang digunakan dalam proyek.  
@@ -51,7 +51,7 @@ Semua pengaturan utama didefinisikan di sini, seperti:
 
 ---
 
-## Cara Kerja Migrasi Database di Django
+## 4. Bagaimana cara kerja migrasi database di Django?
 Migrasi database di Django adalah proses untuk menyinkronkan perubahan pada **model (models.py)** dengan **struktur database**.  
 
 Cara kerjanya:  
@@ -66,7 +66,7 @@ Cara kerjanya:
 
 ---
 
-## Mengapa Django Dijadikan Permulaan Pembelajaran Pengembangan Perangkat Lunak?
+## 5. Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?
 Django dipilih sebagai framework awal dalam pembelajaran karena beberapa alasan:  
 
 1. **Konsep MVC/MVT yang jelas**  
@@ -83,5 +83,5 @@ Django dipilih sebagai framework awal dalam pembelajaran karena beberapa alasan:
 
 ---
 
-## Feedback untuk Asisten Dosen Tutorial 1
+## 6. Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
 Sejauh ini belum ada ^^
