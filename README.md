@@ -176,4 +176,5 @@ Sejauh ini belum ada.
 
 ---
 
-## Hasi akses keempat URL menggunakan Postman
+## Hasil akses keempat URL menggunakan Postman
+![Bagan](images/bagan.png)
