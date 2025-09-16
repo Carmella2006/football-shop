@@ -2,7 +2,7 @@
 <summary>Tugas 2</summary>
 
 ## Link Aplikasi
-(https://your-pws-link.cs.ui.ac.id)
+(https://carmella-geraldine-footballshop.pbp.cs.ui.ac.id)
 
 ## 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
