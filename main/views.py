@@ -16,14 +16,14 @@ from django.urls import reverse
 def show_main(request):
     filter_type = request.GET.get("filter", "all") 
     if filter_type == "all":
-        product_list = Product.objects.filter(user=request.user)
+        product_list = Product.objects.all()
     else:
         product_list = Product.objects.filter(user=request.user)
     context = {
         'npm' : '2406358270',
         'name': 'Carmella Geraldine Sutrisna',
         'class_name': 'PBP A',
-        'products': Product.objects.all(),
+        'products': product_list,
         'last_login': request.COOKIES.get('last_login', 'Never'),
         'username': request.user.username
     }
