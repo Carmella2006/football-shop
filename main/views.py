@@ -16,7 +16,7 @@ from django.urls import reverse
 def show_main(request):
     filter_type = request.GET.get("filter", "all") 
     if filter_type == "all":
-        product_list = Product.objects.all()
+        product_list = Product.objects.filter(user=request.user)
     else:
         product_list = Product.objects.filter(user=request.user)
     context = {
@@ -24,7 +24,8 @@ def show_main(request):
         'name': 'Carmella Geraldine Sutrisna',
         'class_name': 'PBP A',
         'products': Product.objects.all(),
-        'last_login': request.COOKIES.get('last_login', 'Never')
+        'last_login': request.COOKIES.get('last_login', 'Never'),
+        'username': request.user.username
     }
 
     return render(request, "main.html", context)
