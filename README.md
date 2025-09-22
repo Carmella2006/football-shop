@@ -181,3 +181,139 @@ Sejauh ini belum ada.
 ![akses JSON](images/akses_json.png)
 ![akses XML by ID](images/akses_xml_id.png)
 ![akses JSON by ID](images/akses_json_id.png)
+
+<details>
+<summary>Tugas 4</summary>
+
+## 1. Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
+
+`AuthenticationForm` adalah form bawaan Django (`django.contrib.auth.forms.AuthenticationForm`) yang dipakai untuk proses login. Fungsinya memvalidasi username + password dan memanggil `authenticate()` untuk mengecek kredensial.
+
+**Kelebihan**
+1. Siap pakai sehingga tidak perlu menulis validasi credential dari nol.
+2. Integrasi langsung dengan `django.contrib.auth` (middleware, backends, session).
+3. Sudah menangani pesan error standar (user tidak ada, password salah).
+4. Aman selama dipakai bersama CSRF middleware dan HTTPS.
+
+**Kekurangan**
+1. Default tampilannya minimal, perlu custom template/CSS untuk UI.
+2. Tidak punya fitur “remember me” otomatis — harus ditambahkan sendiri.
+3. Kalau pakai custom user model dengan field berbeda, mungkin perlu sedikit penyesuaian.
+4. Error message generik — kalo perlu message lebih informatif harus override.
+
+---
+
+## 2. Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
+
+**Autentikasi** = *"Siapa kamu?”* → proses verifikasi identitas user saat login.
+**Otorisasi** = *"Apa yang boleh kamu lakukan?”* → proses menentukan hak akses user setelah berhasil login.
+
+Cara Django mengimplementasikannya:
+1. Autentikasi:
+   - Fungsi utama: `authenticate()`, `login()`, `logout()`.
+   - Akses user di request: `request.user`, `user.is_authenticated`.
+   - Middleware penting: `SessionMiddleware` + `AuthenticationMiddleware`.
+2. Otorisasi:
+   - Sistem permissions dan groups.
+   - Cek permission: `user.has_perm('app_label.action_model')`.
+   - Decorator: `@permission_required('app_label.action_model')`.
+   - Atribut khusus: `is_staff` (akses admin site), `is_superuser` (akses penuh).
+   - Group bisa dibuat di Django admin, lalu assign permission ke group → user cukup dimasukkan ke group.
+
+---
+
+## 3. Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
+
+**Cookies (client-side storage)**
+Kelebihan:
+- Simpel, tidak perlu beban di server karena data disimpan di browser user.
+- Bisa bertahan antar sesi (misalnya “remember me”).
+- Mudah diakses oleh client.
+
+Kekurangan:
+- Kapasitas terbatas (umumnya maksimal ±4KB per cookie).
+- Data bisa dimodifikasi user (tidak 100% aman).
+- Rentan terhadap serangan XSS/CSRF jika tidak diamankan.
+- Tidak cocok menyimpan data sensitif.
+
+**Sessions (server-side storage, hanya simpan session ID di cookie)**
+Kelebihan:
+- Lebih aman karena data sebenarnya disimpan di server, bukan di browser.
+- Bisa menyimpan data kompleks dan ukuran lebih besar dibanding cookie.
+- User tidak bisa memodifikasi data session secara langsung.
+
+Kekurangan:
+- Membutuhkan storage di server (database, file, cache).
+- Menambah overhead pada server, terutama kalau banyak user aktif.
+- Perlu konfigurasi tambahan untuk sistem skala besar.
+
+---
+
+## 4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
+
+**Cookies belum tentu aman karena bisa dibaca atau diubah oleh user di browser.**
+
+Risiko utama:
+- Session hijacking: pencurian session ID lewat XSS (cross-site scripting).
+- Session fixation: penyerang memaksa user pakai session ID tertentu.
+- CSRF (Cross-Site Request Forgery): penyalahgunaan cookies untuk melakukan request sah tanpa sepengetahuan user.
+- Man-in-the-middle: intercept cookie jika tidak dienkripsi dengan HTTPS.
+
+Django punya beberapa setting penting untuk menangani keamanan Cookies:
+- SESSION_COOKIE_SECURE = True
+     cookie hanya dikirim lewat HTTPS, tidak bisa dicegat via HTTP.
+
+- SESSION_COOKIE_HTTPONLY = True
+     cookie tidak bisa diakses via JavaScript, mengurangi risiko XSS.
+
+- SESSION_COOKIE_SAMESITE = 'Lax' atau 'Strict'
+     mencegah cookie dikirim lintas domain, membantu lawan CSRF.
+
+- CSRF protection built-in
+     Django punya CSRF token middleware untuk validasi form dan request POST.
+
+- Signed cookies (pakai django.core.signing)
+     Django bisa menandatangani cookies dengan secret key, sehingga user tidak bisa mengubah nilai cookie tanpa ketahuan.
+
+---
+
+## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step.
+1. Membuat Fungsi dan Form Registrasi
+   - Mengimpor `UserCreationForm` dan `messages` di `views.py`.
+   - Membuat fungsi `register` untuk menampilkan form registrasi dan menyimpan user baru jika form valid.
+   - Membuat file `register.html` untuk menampilkan form pendaftaran.
+   - Menambahkan path `register/` di `urls.py` agar halaman register bisa diakses.
+   - Hasil: Pengguna baru dapat membuat akun dengan form bawaan Django.
+
+2. Membuat Fungsi Login
+   - Mengimpor `AuthenticationForm`, `authenticate`, dan `login` di `views.py`.
+   - Membuat fungsi `login_user` untuk mengautentikasi data user, melakukan login jika valid, dan mengarahkan user ke halaman utama.
+   - Membuat file `login.html` untuk menampilkan form login.
+   - Menambahkan path `login/` di `urls.py`.
+   - Hasil: User dapat login menggunakan akun yang sudah terdaftar.
+
+3. Membuat Fungsi Logout
+   - Mengimpor `logout` di `views.py`.
+   - Membuat fungsi `logout_user` yang menghapus session login.
+   - Menambahkan tombol Logout di `main.html`.
+   - Menambahkan path `logout/` di `urls.py`.
+   - Hasil: User bisa keluar dari sesi login dengan menekan tombol Logout.
+  
+4. Merestriksi Akses Halaman Utama
+   - Mengimpor `login_required` dari `django.contrib.auth.decorators`.
+   - Menambahkan `@login_required(login_url='/login')` di fungsi `show_main`.
+   - Hasil: Halaman utama (`main`) hanya bisa diakses oleh user yang sudah login.
+  
+5. Menyimpan Data Login Menggunakan Cookies
+   - Menambahkan `HttpResponseRedirect`, `reverse`, dan `datetime` di `views.py`.
+   - Memodifikasi `login_user` agar menyimpan cookie `last_login` dengan timestamp saat login.
+   - Menambahkan `last_login` ke `context show_main` untuk ditampilkan di halaman utama.
+   - Memodifikasi `logout_user` agar menghapus cookie `last_login`.
+   - Hasil: Waktu terakhir login user ditampilkan di halaman utama dan hilang setelah logout.
+
+6. Menghubungkan Model Product dengan User
+   - Menambahkan field `user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)` pada model `Product`.
+   - Melakukan migrasi (`makemigrations dan migrate`).
+   - Mengubah fungsi `create_product` agar setiap produk yang ditambahkan otomatis terhubung dengan `request.user`.
+   - Mengubah fungsi `show_main` agar mendukung filter `all` (semua produk) dan `my` (produk milik user yang login).
+   - Hasil: Setiap produk terhubung dengan user yang membuatnya, dan fitur filter produk berjalan sesuai akun login.
