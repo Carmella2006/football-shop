@@ -181,6 +181,7 @@ Sejauh ini belum ada.
 ![akses JSON](images/akses_json.png)
 ![akses XML by ID](images/akses_xml_id.png)
 ![akses JSON by ID](images/akses_json_id.png)
+</details>
 
 <details>
 <summary>Tugas 4</summary>
@@ -317,3 +318,4 @@ Django punya beberapa setting penting untuk menangani keamanan Cookies:
    - Mengubah fungsi `create_product` agar setiap produk yang ditambahkan otomatis terhubung dengan `request.user`.
    - Mengubah fungsi `show_main` agar mendukung filter `all` (semua produk) dan `my` (produk milik user yang login).
    - Hasil: Setiap produk terhubung dengan user yang membuatnya, dan fitur filter produk berjalan sesuai akun login.
+</details>
