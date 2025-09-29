@@ -14,21 +14,21 @@ from django.urls import reverse
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
-    filter_type = request.GET.get("filter", "all") 
-    if filter_type == "all":
-        product_list = Product.objects.all()
-    else:
+    view = request.GET.get("view", "all")
+    if view == "my":
         product_list = Product.objects.filter(user=request.user)
+    else:
+        product_list = Product.objects.all()
+
     context = {
-        'npm' : '2406358270',
-        'name': 'Carmella Geraldine Sutrisna',
-        'class_name': 'PBP A',
         'products': product_list,
         'last_login': request.COOKIES.get('last_login', 'Never'),
-        'username': request.user.username
+        'username': request.user.username,
+        'view': view
     }
 
     return render(request, "main.html", context)
+
 
 def create_product(request):
     form = ProductForm(request.POST or None)
@@ -111,3 +111,21 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))

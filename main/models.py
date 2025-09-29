@@ -19,5 +19,9 @@ class Product(models.Model):
     brand = models.CharField(max_length=100, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
+    @property
+    def is_product_hot(self):
+        return self.stock < 5
+
     def __str__(self):
         return self.name

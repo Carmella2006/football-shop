@@ -1,74 +1,60 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<h1>Football Shop</h1>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+    <!-- HEADER -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Football Shop</h1>
+            <p class="text-gray-600">
+                Welcome, {{ user.username }}!<br>
+                <span class="text-sm">Last login: {{ last_login }}</span>
+            </p>
+        </div>
 
-<h5>NPM: </h5>
-<p>{{ npm }}</p>
+        <div class="flex space-x-3 mt-4 sm:mt-0">
+            <a href="{% url 'main:create_product' %}"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                + Add Product
+            </a>
+            <a href="{% url 'main:logout' %}"
+                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">
+                Logout
+            </a>
+        </div>
+    </div>
 
-<h5>Name:</h5>
-<p>{{ name }}</p>
-
-<h5>Class:</h5>
-<p>{{ class_name }}</p>
-
-<a href="{% url 'main:create_product' %}">
-    <button>+ Add Product</button>
-</a>
-<a href="{% url 'main:logout' %}">
-    <button>Logout</button>
-</a>
-<h5>Welcome, {{ username }}!</h5>
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-<hr>
-
-<a href="?filter=all">
-    <button type="button">All Products</button>
-</a>
-<a href="?filter=my">
-    <button type="button">My Products</button>
-</a>
-
-{% if not products %}
-<p>No products available in the shop.</p>
-{% else %}
-
-{% for product in products %}
-<div>
-    <h2>
-        <a href="{% url 'main:show_product' product.id %}">
-            {{ product.name }}
+    <!-- ALL PRODUCT / MY PRODUCT -->
+    <div class="mb-6 flex space-x-3">
+        <a href="?view=all"
+            class="px-4 py-2 rounded-md {% if view == 'all' %}bg-blue-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+            All Products
         </a>
-    </h2>
+        <a href="?view=my"
+            class="px-4 py-2 rounded-md {% if view == 'my' %}bg-blue-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+            My Products
+        </a>
+    </div>
 
-    <p>
-        <b>{{ product.category }}</b>
-        {% if product.is_featured %}| <b>Featured</b>{% endif %}
-        | Price: Rp {{ product.price }} | Stock: {{ product.stock }}
-    </p>
-
-    {% if product.thumbnail %}
-    <img src="{{ product.thumbnail }}" alt="{{ product.name }}" width="150" height="100">
-    <br />
-    {% endif %}
-
-    <p>{{ product.description|truncatewords:25|linebreaksbr }}...</p>
-
-    {% if product.user %}
-    <p>Author: {{ product.user.username }}</p>
+    <!-- LIST PRODUCT -->
+    {% if products|length == 0 %}
+    <div class="text-center bg-white p-10 rounded-xl shadow">
+        <img src="{% static 'image/no_product.png' %}" alt="No Products"
+            class="mx-auto mb-6 w-32 h-32 object-contain opacity-80">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-2">No products yet</h2>
+        <p class="text-gray-500 mb-6">Start by adding your first product to the shop.</p>
+        <a href="{% url 'main:create_product' %}"
+            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+            + Add Product
+        </a>
+    </div>
     {% else %}
-    <p>Author: Anonymous</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in products %}
+        {% include 'card_product.html' with product=product %}
+        {% endfor %}
+    </div>
     {% endif %}
-
-    <p>
-        <a href="{% url 'main:show_product' product.id %}">
-            <button>Detail</button>
-        </a>
-    </p>
 </div>
-
-<hr>
-{% endfor %}
-
-{% endif %}
-
 {% endblock %}

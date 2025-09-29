@@ -5,11 +5,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block meta %} {% endblock meta %}
+    {% block meta %}{% endblock meta %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
 </head>
 
-<body>
-    {% block content %} {% endblock content %}
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    {% include 'navbar.html' %}
+    <main class="flex-1 container mx-auto p-4">
+        {% block content %}{% endblock content %}
+    </main>
 </body>
 
 </html>
