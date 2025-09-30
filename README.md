@@ -319,3 +319,70 @@ Django punya beberapa setting penting untuk menangani keamanan Cookies:
    - Mengubah fungsi `show_main` agar mendukung filter `all` (semua produk) dan `my` (produk milik user yang login).
    - Hasil: Setiap produk terhubung dengan user yang membuatnya, dan fitur filter produk berjalan sesuai akun login.
 </details>
+
+<details>
+<summary>Tugas 5</summary>
+
+## 1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+Ketika sebuah elemen HTML memiliki beberapa aturan CSS, browser akan memilih aturan yang memiliki prioritas tertinggi berdasarkan urutan berikut:
+1. Inline styles
+2. ID selectors
+3. Classes selector
+4. Element selector
+
+---
+
+## 2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+Responsive design menjadi konsep penting dalam pengembangan aplikasi web karena pengguna mengakses website melalui berbagai device dengan ukuran layar dan resolusi yang berbeda—dari desktop besar, laptop, tablet, hingga smartphone. Tanpa responsive design, tampilan web bisa tidak nyaman atau bahkan tidak bisa digunakan di beberapa device.
+
+Contoh aplikasi yang sudah menerapkan responsive design adalah website pinterest. Karena tampilan menyesuaikan otomatis di desktop, tablet, dan smartphone, serta grid fleksibel, navigasi adaptif, dan konten selalu proporsional.
+
+Contoh aplikasi yang belum menerapkan responsive design adalah website resmi pemerintah Kota Denpasar kadang teks dan tombol terlalu kecil di mobile, harus scroll horizontal, dan navigasi sulit digunakan.
+
+---
+
+## 3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+- Margin adalah area di luar elemen yang memberi jarak antar elemen, dan berguna untuk mengatur spacing antar elemen.
+- Border adalah garis di sekeliling elemen yang berada di antara margin dan padding. Bisa diatur ketebalan, warna, dan jenis garisnya. Secara visual membungkus konten dan padding.
+- Padding adalah Area di dalam elemen, yaitu jarak antara konten dan border. Membuat konten berjarak dengan border.
+
+---
+
+## 4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+Flexbox adalah sistem layout 1 dimensi yang digunakan untuk mengatur elemen dalam satu baris atau satu kolom dengan fleksibel untuk membantu mengatur alignment, spacing, dan ukuran elemen agar responsif. Kegunaannya sendiri adalah untuk mempermudah membuat layout horizontal atau vertical, membuat elemen otomatis menyesuaikan ruang kosong. Mengatur alignment secara mudah seperti rata kiri, kanan, tengah, atau tersebar merata, cocok untuk navbar, tombol sejajar, card horizontal, dan layout sederhana.
+
+---
+
+## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step!
+1. Menambahkan Tailwind ke aplikasi
+2. Membuat fitur edit product
+   - Tambah fungsi edit_product di `views.py`.
+   - Buat template `edit_product.html` untuk form edit.
+   - Tambah path di `urls.py`.
+   - Tambahkan tombol Edit di `main.html` (hanya muncul jika user yang login adalah penjual product).
+3. Membuat fitur delete product
+   - Tambah fungsi delete_product di `views.py`.
+   - Tambah path di `urls.py`.
+   - Tambahkan tombol Delete di `main.html` (hanya untuk penjual product).
+4. Membuat navbar responsive
+   - Buat file `navbar.html` di folder templates.
+   - Tautkan ke `main.html` pakai {% include 'navbar.html' %}.
+   - Styling pakai Tailwind CSS, responsive dengan menu desktop & mobile (hamburger menu).
+5. Konfigurasi Static Files
+   - Tambahkan middleware WhiteNoise di `settings.py`.
+   - Atur STATIC_URL, STATICFILES_DIRS, dan STATIC_ROOT.
+   - Install WhiteNoise untuk memastikan file statis bisa dipakai di production.
+6. Styling dengan Tailwind & Global CSS
+   - Buat file `global.css` di /static/css/.
+   - Hubungkan ke `base.html`.
+   - Tambah styling custom.
+7. Styling halaman login & register
+   - Login Page: lebih modern, dengan border, form-style, dan pesan error.
+   - Register Page: mirip login, tapi untuk pembuatan akun baru, dengan validasi password1 & password2.
+8. Styling Halaman Home
+   - Buat file `card_product.html` untuk tiap product.
+   - Menampilkan thumbnail, nama produk, deskripsi, harga, dan actions button.
+   - Tambahkan empty state kalau belum ada product.
+
+Home akan menampilkan daftar news dalam bentuk grid card (lebih estetik dibanding list biasa).
+</details>
