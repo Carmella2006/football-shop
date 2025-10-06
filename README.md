@@ -385,3 +385,45 @@ Flexbox adalah sistem layout 1 dimensi yang digunakan untuk mengatur elemen dala
    - Tambahkan empty state kalau belum ada product.
    - Home akan menampilkan daftar produk dalam bentuk card.
 </details>
+
+<details>
+<summary>Tugas 6</summary>
+
+## 1. Apa perbedaan antara synchronous request dan asynchronous request?
+Synchronous request membuat client menunggu respons dari server sebelum melanjutkan proses, sedangkan asynchronous request memungkinkan client tetap berjalan dan menangani respons ketika sudah tersedia, sehingga UI tetap responsif.
+
+## 2. Bagaimana AJAX bekerja di Django (alur request–response)?
+Di Django, AJAX bekerja dengan mengirimkan request secara asynchronous ke server (biasanya menggunakan JavaScript fetch atau XMLHttpRequest). Server menerima request di view, memproses data (misalnya query database), dan mengembalikan response (JSON, HTML, atau data lain). JavaScript di sisi client kemudian menangani response tersebut untuk memperbarui tampilan tanpa me-refresh halaman.
+
+## 3. Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
+Berikut beberapa keuntungan menggunakan AJAX dibandingkan render biasa di Django:
+1. Tidak perlu reload halaman: Halaman bisa diperbarui sebagian saja, sehingga pengalaman pengguna lebih mulus.
+2. Lebih cepat: Hanya data yang dibutuhkan yang dikirim dari server, bukan seluruh halaman.
+3. Interaktifitas tinggi: Memungkinkan update konten secara dinamis berdasarkan aksi pengguna, seperti filter atau submit form.
+4. Mengurangi beban server: Karena tidak perlu merender template penuh setiap kali ada perubahan.
+5. Pengalaman pengguna lebih modern: Tampilan terasa seperti aplikasi web dinamis (SPA-style) meski tetap menggunakan Django.
+
+## 4. Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
+Untuk memastikan keamanan saat menggunakan AJAX untuk Login dan Register di Django, beberapa langkah penting adalah:
+1. Gunakan CSRF Token
+   Django secara default melindungi form dengan CSRF token.
+2. Validasi data di server
+   Jangan hanya mengandalkan validasi di sisi frontend. Selalu periksa username, password, email, dan format input di view Django.
+3. Gunakan HTTPS
+   Pastikan request dikirim melalui HTTPS agar data sensitif (seperti password) tidak dikirim secara plaintext.
+4. Hash password
+   Gunakan set_password atau make_password Django untuk menyimpan password secara aman di database.
+5. Batasi percobaan login
+   Implementasikan rate limiting atau login attempt limit untuk mencegah brute-force attack.
+6. Hindari menampilkan pesan error terlalu detail
+   Misal: jangan langsung memberitahu “username salah” atau “password salah”, cukup “Login gagal” agar tidak membantu peretas.
+7. Gunakan session yang aman
+   Pastikan session Django dikonfigurasi dengan SESSION_COOKIE_SECURE = True saat menggunakan HTTPS, dan SESSION_COOKIE_HTTPONLY = True agar cookie tidak bisa diakses via JavaScript.
+
+## 5. Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
+AJAX bisa meningkatkan pengalaman pengguna (User Experience) dengan cara:
+1. Update halaman lebih cepat – Konten bisa diperbarui tanpa memuat ulang seluruh halaman.
+2. Responsif dan interaktif – Pengguna merasa website lebih hidup karena aksi seperti klik tombol atau filter langsung menampilkan hasil.
+3. Mengurangi gangguan visual – Tidak ada “flash” atau loading page penuh, jadi transisi lebih mulus.
+4. Hemat bandwidth – Hanya data yang dibutuhkan yang dikirim dan diterima, bukan seluruh halaman HTML.
+5. Mempercepat alur kerja – Form, pencarian, dan filter bisa dilakukan lebih efisien tanpa menunggu reload halaman.
