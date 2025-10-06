@@ -10,7 +10,6 @@ class ProductForm(ModelForm):
             "description",
             "thumbnail",
             "category",
-            "is_featured",
             "stock",
             "brand",
         ]

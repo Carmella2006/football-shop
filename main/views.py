@@ -8,8 +8,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import datetime
-from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.http import HttpResponseRedirect, JsonResponse
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -30,26 +30,42 @@ def show_main(request):
     return render(request, "main.html", context)
 
 
+@login_required(login_url='/login')
 def create_product(request):
-    form = ProductForm(request.POST or None)
+    if request.method == "POST":
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
 
-    if form.is_valid() and request.method == "POST":
-        product_entry = form.save(commit = False)
-        product_entry.user = request.user
-        product_entry.save()
+        new_product = Product(
+            name=name,
+            price=price,
+            description=description,
+            user=request.user
+        )
+        new_product.save()
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({
+                "message": "Product created successfully",
+                "product": {
+                    "id": new_product.id,
+                    "name": new_product.name,
+                    "price": new_product.price,
+                    "description": new_product.description,
+                    "user": new_product.user.id,
+                }
+            })
+        
         return redirect('main:show_main')
 
-    context = {'form': form}
-    return render(request, "create_product.html", context)
+    return render(request, "create_product.html")
+
 
 @login_required(login_url='/login')
 def show_product(request, id):
     product = get_object_or_404(Product, pk=id)
-
-    context = {
-        'product': product
-    }
-
+    context = {'product': product}
     return render(request, "product_detail.html", context)
 
 def show_xml(request):
@@ -59,8 +75,20 @@ def show_xml(request):
 
 def show_json(request):
     product_list = Product.objects.all()
-    json_data = serializers.serialize("json",  product_list)
-    return HttpResponse(json_data, content_type="application/json")
+    data = [
+        {
+            'id': product.id,
+            'name': product.name,
+            'price': product.price,
+            'description': product.description,
+            'user_id': product.user.id if product.user else None,
+            'thumbnail': product.thumbnail,
+            'brand': product.brand,
+            'stock': product.stock
+        }
+        for product in product_list
+    ]
+    return JsonResponse(data, safe=False)
 
 def show_xml_by_id(request, id):
    try:
@@ -71,12 +99,19 @@ def show_xml_by_id(request, id):
        return HttpResponse(status=404)
 
 def show_json_by_id(request, id):
-   try:
-       item = Product.objects.get(pk=id)
-       json_data = serializers.serialize("json", [item])
-       return HttpResponse(json_data, content_type="application/json")
-   except Product.DoesNotExist:
-       return HttpResponse(status=404)
+    try:
+        product = Product.objects.select_related('user').get(pk=id)
+        data = {
+            'id': str(product.id),
+            'name': product.name,
+            'description': product.description,
+            'price': product.price,
+            'user_id': product.user_id,
+            'user_username': product.user.username if product.user_id else None,
+        }
+        return JsonResponse(data)
+    except Product.DoesNotExist:
+        return JsonResponse({'detail': 'Not found'}, status=404)
 
 def register(request):
     form = UserCreationForm()
@@ -112,20 +147,27 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
+@login_required(login_url='/login')
 def edit_product(request, id):
     product = get_object_or_404(Product, pk=id)
-    form = ProductForm(request.POST or None, instance=product)
-    if form.is_valid() and request.method == 'POST':
-        form.save()
-        return redirect('main:show_main')
+    if request.method == "POST":
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({"message": "Product updated successfully"}, status=200)
+        else:
+            return JsonResponse({"error": "Invalid form data"}, status=400)
+    else:
+        form = ProductForm(instance=product)
+    return render(request, "edit_product.html", {"form": form, "product": product})
 
-    context = {
-        'form': form
-    }
-
-    return render(request, "edit_product.html", context)
-
+@login_required(login_url='/login')
 def delete_product(request, id):
     product = get_object_or_404(Product, pk=id)
-    product.delete()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    if request.method in ["POST", "DELETE"]:  # POST fallback
+        product.delete()
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({"message": "Product deleted successfully"}, status=200)
+        else:
+            return redirect('main:show_main')
+    return JsonResponse({"error": "Invalid request"}, status=400)

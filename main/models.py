@@ -14,7 +14,6 @@ class Product(models.Model):
     description = models.TextField()
     thumbnail = models.URLField(max_length=500)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='shoes')
-    is_featured = models.BooleanField(default=False)
     stock = models.IntegerField(default=0)
     brand = models.CharField(max_length=100, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

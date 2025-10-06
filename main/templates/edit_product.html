@@ -1,111 +1,21 @@
-{% extends 'base.html' %}
-{% load static %}
+<!-- Edit Product Modal -->
+<div id="detail-edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-6 w-full max-w-lg">
+        <h2 class="text-xl font-bold mb-4">Edit Product</h2>
+        <form id="detail-modal-form" class="space-y-4">
+            <label class="block mb-1 font-semibold">Name</label>
+            <input type="text" name="name" class="w-full border rounded px-2 py-1 mb-2">
 
-{% block meta %}
-<title>Edit Product - Football Shop</title>
-{% endblock meta %}
+            <label class="block mb-1 font-semibold">Price</label>
+            <input type="number" name="price" class="w-full border rounded px-2 py-1 mb-2">
 
-{% block content %}
-<div class="bg-gray-50 w-full min-h-screen">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        <!-- Back Navigation -->
-        <div class="mb-6">
-            <a href="{% url 'main:show_main' %}"
-                class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                ← Back to Products
-            </a>
-        </div>
-
-        <!-- Form -->
-        <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6 sm:p-8">
-            <div class="mb-8">
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">Edit Product</h1>
-                <p class="text-gray-600">Update your football gear information</p>
-            </div>
-
-            <!-- CSS supaya semua input ada border & checkbox sejajar -->
-            <style>
-                input[type="text"],
-                input[type="number"],
-                input[type="url"],
-                textarea,
-                select {
-                    border: 1px solid #d1d5db;
-                    /* gray-300 */
-                    border-radius: 0.375rem;
-                    /* rounded-md */
-                    padding: 0.5rem 0.75rem;
-                    /* px-3 py-2 */
-                    width: 100%;
-                }
-
-                input[type="text"]:focus,
-                input[type="number"]:focus,
-                input[type="url"]:focus,
-                textarea:focus,
-                select:focus {
-                    outline: none;
-                    border-color: #2563eb;
-                    /* blue-600 */
-                    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-                }
-
-                .checkbox-wrapper {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-
-                .checkbox-wrapper input[type="checkbox"] {
-                    width: 1rem;
-                    height: 1rem;
-                    border: 1px solid #d1d5db;
-                    border-radius: 0.25rem;
-                }
-            </style>
-
-            <form method="POST" class="space-y-6">
-                {% csrf_token %}
-                {% for field in form %}
-                <div>
-                    {% if field.field.widget.input_type == "checkbox" %}
-                    <!-- Checkbox horizontal -->
-                    <div class="checkbox-wrapper">
-                        {{ field }}
-                        <label for="{{ field.id_for_label }}" class="text-sm font-medium text-gray-700">
-                            {{ field.label }}
-                        </label>
-                    </div>
-                    {% else %}
-                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                        {{ field.label }}
-                    </label>
-                    <div class="w-full">
-                        {{ field }}
-                    </div>
-                    {% endif %}
-                    {% if field.help_text %}
-                    <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
-                    {% endif %}
-                    {% for error in field.errors %}
-                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-                    {% endfor %}
-                </div>
-                {% endfor %}
-
-                <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
-                    <a href="{% url 'main:show_main' %}" class="order-2 sm:order-1 px-6 py-3 border border-gray-300 text-gray-700 
-                    rounded-md font-medium hover:bg-gray-50 transition-colors text-center">
-                        Cancel
-                    </a>
-                    <button type="submit" class="order-1 sm:order-2 flex-1 bg-blue-600 text-white px-6 py-3 
-                         rounded-md font-medium hover:bg-blue-700 transition-colors">
-                        Update Product
-                    </button>
-                </div>
-            </form>
+            <label class="block mb-1 font-semibold">Description</label>
+            <textarea name="description" class="w-full border rounded px-2 py-1 mb-2"></textarea>
+        </form>
+        <div class="mt-4 flex justify-end gap-2">
+            <button type="button" onclick="closeDetailModal()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+            <button type="button" id="detail-modal-submit"
+                class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
         </div>
     </div>
 </div>
-{% endblock %}

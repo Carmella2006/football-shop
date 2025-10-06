@@ -1,103 +1,65 @@
 {% extends 'base.html' %}
-{% block meta %}
-<title>Create Product - Football Shop</title>
-{% endblock meta %}
+{% load static %}
 
 {% block content %}
-<div class="bg-gray-50 w-full min-h-screen">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        <!-- Back Navigation -->
-        <div class="mb-6">
-            <a href="{% url 'main:show_main' %}"
-                class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                ← Back to Products
-            </a>
+<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold mb-4">Create New Product</h2>
+    <form id="create-product-form" method="POST">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+            <input type="text" name="name" id="name" placeholder="Enter product name"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
         </div>
-
-        <!-- Form -->
-        <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6 sm:p-8">
-            <div class="mb-8">
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">Add New Product</h1>
-                <p class="text-gray-600">List your football gear for sale in the shop</p>
-            </div>
-
-            <style>
-                input[type="text"],
-                input[type="number"],
-                input[type="url"],
-                textarea,
-                select {
-                    border: 1px solid #d1d5db;
-                    border-radius: 0.375rem;
-                    padding: 0.5rem 0.75rem;
-                    width: 100%;
-                }
-
-                input[type="text"]:focus,
-                input[type="number"]:focus,
-                input[type="url"]:focus,
-                textarea:focus,
-                select:focus {
-                    outline: none;
-                    border-color: #2563eb;
-                    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-                }
-
-                .checkbox-wrapper {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-
-                .checkbox-wrapper input[type="checkbox"] {
-                    width: 1rem;
-                    height: 1rem;
-                    border: 1px solid #d1d5db;
-                    border-radius: 0.25rem;
-                }
-            </style>
-
-            <form method="POST" class="space-y-6">
-                {% csrf_token %}
-                {% for field in form %}
-                <div>
-                    {% if field.field.widget.input_type == "checkbox" %}
-                    <div class="checkbox-wrapper">
-                        {{ field }}
-                        <label for="{{ field.id_for_label }}" class="text-sm font-medium text-gray-700">
-                            {{ field.label }}
-                        </label>
-                    </div>
-                    {% else %}
-                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                        {{ field.label }}
-                    </label>
-                    <div class="w-full">
-                        {{ field }}
-                    </div>
-                    {% endif %}
-                    {% if field.help_text %}
-                    <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
-                    {% endif %}
-                    {% for error in field.errors %}
-                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-                    {% endfor %}
-                </div>
-                {% endfor %}
-
-                <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
-                    <a href="{% url 'main:show_main' %}" class="order-2 sm:order-1 px-6 py-3 border border-gray-300 text-gray-700 
-                    rounded-md font-medium hover:bg-gray-50 transition-colors text-center">
-                        Cancel
-                    </a>
-                    <button type="submit" class="order-1 sm:order-2 flex-1 bg-blue-600 text-white px-6 py-3 
-                         rounded-md font-medium hover:bg-blue-700 transition-colors">
-                        Save Product
-                    </button>
-                </div>
-            </form>
+        <div class="mb-4">
+            <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+            <input type="number" name="price" id="price" placeholder="Enter product price"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
         </div>
-    </div>
+        <div class="mb-4">
+            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+            <textarea name="description" id="description" placeholder="Enter product description"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+        </div>
+        <button type="submit"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">Create Product</button>
+    </form>
 </div>
+
+<script>
+    const form = document.getElementById("create-product-form");
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = {
+            name: formData.get("name"),
+            price: formData.get("price"),
+            description: formData.get("description")
+        };
+
+        try {
+            const response = await fetch("{% url 'main:create_product' %}", {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                },
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                showToast("Success", result.message, "success");
+                form.reset();
+            } else {
+                showToast("Error", result.error || "Failed to create product", "error");
+            }
+        } catch (err) {
+            showToast("Error", "Something went wrong", "error");
+        }
+    });
+</script>
 {% endblock %}
