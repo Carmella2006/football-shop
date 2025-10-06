@@ -383,6 +383,5 @@ Flexbox adalah sistem layout 1 dimensi yang digunakan untuk mengatur elemen dala
    - Buat file `card_product.html` untuk tiap product.
    - Menampilkan thumbnail, nama produk, deskripsi, harga, dan actions button.
    - Tambahkan empty state kalau belum ada product.
-
-Home akan menampilkan daftar news dalam bentuk grid card (lebih estetik dibanding list biasa).
+   - Home akan menampilkan daftar produk dalam bentuk card.
 </details>
