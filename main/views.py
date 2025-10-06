@@ -14,19 +14,10 @@ from django.http import HttpResponseRedirect, JsonResponse
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
-    view = request.GET.get("view", "all")
-    if view == "my":
-        product_list = Product.objects.filter(user=request.user)
-    else:
-        product_list = Product.objects.all()
-
     context = {
-        'products': product_list,
         'last_login': request.COOKIES.get('last_login', 'Never'),
         'username': request.user.username,
-        'view': view
     }
-
     return render(request, "main.html", context)
 
 
@@ -73,8 +64,18 @@ def show_xml(request):
     xml_data = serializers.serialize("xml", product_list)
     return HttpResponse(xml_data, content_type="application/xml")
 
+@login_required(login_url='/login') 
 def show_json(request):
     product_list = Product.objects.all()
+    view_filter = request.GET.get('view') 
+    
+    if view_filter == "my":
+        product_list = Product.objects.filter(user=request.user)
+    else:
+        category_filter = request.GET.get('category')
+        if category_filter:
+            product_list = product_list.filter(category=category_filter)
+
     data = [
         {
             'id': product.id,

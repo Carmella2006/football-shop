@@ -427,3 +427,4 @@ AJAX bisa meningkatkan pengalaman pengguna (User Experience) dengan cara:
 3. Mengurangi gangguan visual – Tidak ada “flash” atau loading page penuh, jadi transisi lebih mulus.
 4. Hemat bandwidth – Hanya data yang dibutuhkan yang dikirim dan diterima, bukan seluruh halaman HTML.
 5. Mempercepat alur kerja – Form, pencarian, dan filter bisa dilakukan lebih efisien tanpa menunggu reload halaman.
+</details>

@@ -223,11 +223,19 @@
     async function loadProducts() {
         try {
             displaySection({ showLoading: true });
-            const res = await fetch(PRODUCT_API_ENDPOINT);
-            if (!res.ok) throw new Error("Fetch failed");
 
+            let api_url = PRODUCT_API_ENDPOINT;
+            if (activeFilter === "my") {
+                api_url += "?view=my";
+            }
+
+            const res = await fetch(api_url);
+
+            if (!res.ok) throw new Error("Fetch failed");
             allProducts = await res.json();
+
             filterAndShow();
+
         } catch (err) {
             console.error(err);
             displaySection({ showError: true });
@@ -445,13 +453,15 @@
 
     btnAll.addEventListener("click", () => {
         activeFilter = "all";
-        filterAndShow();
+        loadProducts();
     });
     btnMy.addEventListener("click", () => {
         activeFilter = "my";
-        filterAndShow();
+        loadProducts();
     });
 
-    document.addEventListener("DOMContentLoaded", loadProducts);
+    document.addEventListener("DOMContentLoaded", function () {
+        loadProducts();
+    });
 </script>
 {% endblock %}
